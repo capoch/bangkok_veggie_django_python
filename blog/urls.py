@@ -15,14 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from .views import posts_list, posts_create, posts_detail, posts_update, posts_delete
+from .views import posts_list, posts_create, posts_detail, posts_edit, posts_delete
 
 urlpatterns = [
     url(r'^$', posts_list, name="home"),
     url(r'^create/$', posts_create, name="create"),
-    url(r'^detail/$', posts_detail, name="detail"),
-    url(r'^update/$', posts_update, name="update"),
-    url(r'^delete/$', posts_delete, name="delete"),
+    url(r'^(?P<pk>\d+)/$', posts_detail, name="detail"),
+    url(r'^(?P<pk>\d+)/edit/$', posts_edit, name="edit"),
+    url(r'^(?P<pk>\d+)/delete/$', posts_delete, name="delete"),
 
 
 ]
