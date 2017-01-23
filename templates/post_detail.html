@@ -5,6 +5,20 @@
   <div class="col-sm-6 col-sm-offset-3">
     <h1>{{ post.title }}</h1>
     <small>{{ post.timestamp }}</small></br>
+    {% if post.image %}
+    <img src="{{ post.image.url }}" class="img-responsive" />
+    {% endif %}
     {{ post.content|linebreaks }}
   </div>
+  <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_url }}">
+  Share on Facebook
+  </a>
+
+  <a href="https://twitter.com/home?status={{ share_string }}%20{{ request.build_absolute_url }}">
+Share on Twitter
+</a>
+
+<a href='https://plus.google.com/share?url={{ request.build_absolute_url }}'>
+  <a href="http://www.reddit.com/submit?url={{ request.build_absolute_url }}&title={{ share_string }}">Share on Reddit</a>
+
 {% endblock %}

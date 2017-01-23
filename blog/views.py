@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, HttpResponseRedirect
@@ -9,7 +11,7 @@ from .models import Post
 
 #CRUD for blogs
 def posts_create(request):
-    form = PostForm(request.POST or None)
+    form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
@@ -22,10 +24,12 @@ def posts_create(request):
         }
     return render(request,'post_form.html', context)
 
-def posts_detail(request,pk):
-    post = get_object_or_404(Post,id=pk)
+def posts_detail(request,slug):
+    post = get_object_or_404(Post,slug=slug)
+    share_string = quote(post.content)
     context = {
         "post":post,
+        "share_string": share_string,
     }
     return render(request,'post_detail.html',context)
 
@@ -53,9 +57,9 @@ def posts_list(request):
 
 
 
-def posts_edit(request, pk=None):
-    post = get_object_or_404(Post,id=pk)
-    form = PostForm(request.POST or None, instance=post)
+def posts_edit(request, slug=None):
+    post = get_object_or_404(Post,slug=slug)
+    form = PostForm(request.POST or None, request.FILES or None, instance=post)
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
@@ -68,8 +72,8 @@ def posts_edit(request, pk=None):
     return render(request,'post_form.html', context)
 
 
-def posts_delete(request, pk=None):
-    post = get_object_or_404(Post,id=pk)
+def posts_delete(request, slug=None):
+    post = get_object_or_404(Post,slug=slug)
     post.delete()
     messages.success(request,"Successfully deleted that shit")
     return redirect("posts:home")

@@ -20,9 +20,9 @@ from .views import posts_list, posts_create, posts_detail, posts_edit, posts_del
 urlpatterns = [
     url(r'^$', posts_list, name="home"),
     url(r'^create/$', posts_create, name="create"),
-    url(r'^(?P<pk>\d+)/$', posts_detail, name="detail"),
-    url(r'^(?P<pk>\d+)/edit/$', posts_edit, name="edit"),
-    url(r'^(?P<pk>\d+)/delete/$', posts_delete, name="delete"),
+    url(r'^(?P<slug>[\w-]+)/$', posts_detail, name="detail"),
+    url(r'^(?P<slug>[\w-]+)/edit/$', posts_edit, name="edit"),
+    url(r'^(?P<slug>[\w-]+)/delete/$', posts_delete, name="delete"),
 
 
 ]
