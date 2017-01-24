@@ -16,7 +16,7 @@
       <div class="fb-like" data-href="{{ request.build_absolute_url }}" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
     </p>
     <hr/>
-    {{ post.content|linebreaks }}
+    <div class="col-sm-12 content-markdown">{{ post.content }}</div>
     <div class="fb-comments" data-href="{{ request.build_absolute_url }}" data-numposts="5"></div>
   <!-- <p>
     <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_url }}">Share on Facebook</a>

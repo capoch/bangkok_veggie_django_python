@@ -1,6 +1,13 @@
 <!-- Doctype html-->
 {% extends 'base.html' %}
 
+{% block head_extra %}
+
+  {{ form.media }}
+
+{% endblock %}
+
+
   {% block content %}
   <div class="col-sm-6 col-sm-offset-3">
     <!-- enctype added for image/file -->

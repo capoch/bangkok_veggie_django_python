@@ -21,7 +21,7 @@ class Post(models.Model):
     image_height = models.IntegerField(default=0)
     image_width = models.IntegerField(default=0)
     content = models.TextField()
-    draft = models.BooleanField(default=False)
+    draft = models.BooleanField(default=True)
     publish = models.DateField(auto_now=False,auto_now_add=False, null=True, blank=True)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
