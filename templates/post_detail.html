@@ -12,11 +12,17 @@
     {% else %}
     <p>Author: {{ post.user }}</p>
     {% endif %}
+
+    <p>Read-Time: {% if post.read_time <= 1 %} &lt;1 minute {% elif post.read_time <= 5 %} &lt;5 minutes {% else %} {{ post.read_time }} minutes {% endif %}</p>
     <p>
       <div class="fb-like" data-href="{{ request.build_absolute_url }}" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
     </p>
     <hr/>
-    <div class="col-sm-12 content-markdown">{{ post.content }}</div>
+    <div class="col-sm-12 post-detail-item">{{ post.get_markdown }}</div>
+    <hr />
+    <br />
+    <div> {{ post.comment_set.all }}
+
     <div class="fb-comments" data-href="{{ request.build_absolute_url }}" data-numposts="5"></div>
   <!-- <p>
     <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_url }}">Share on Facebook</a>

@@ -10,6 +10,7 @@ from django.utils import timezone
 
 from .forms import PostForm
 from .models import Post
+from .utils import count_words, get_read_time
 # Create your views here.
 
 #CRUD for blogs
@@ -18,7 +19,7 @@ def posts_create(request):
         if not request.user.is_staff or not request.user.is_superuser:
             raise Http404
         raise PermissionDenied
-    form = PostForm(request.POST or None, request.FILES or None)
+    form = PostForm(request.POST or None, request.FILES or None, initial={"publish": timezone.now().date()})
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
@@ -37,6 +38,7 @@ def posts_detail(request,slug):
         if not request.user.is_staff or not request.user.is_superuser:
             if not post.user == request.user:
                 raise PermissionDenied
+
     context = {
         "post":post,
     }

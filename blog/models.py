@@ -3,7 +3,12 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils import timezone
+from django.utils.safestring import mark_safe
 from django.utils.text import slugify
+
+from markdown_deux import markdown
+
+from .utils import get_read_time
 # Create your models here.
 
 class PostManager(models.Manager):
@@ -23,6 +28,7 @@ class Post(models.Model):
     content = models.TextField()
     draft = models.BooleanField(default=True)
     publish = models.DateField(auto_now=False,auto_now_add=False, null=True, blank=True)
+    read_time = models.IntegerField(null=True, blank=True, default=0)
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -36,6 +42,12 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('posts:detail', kwargs = {"slug": self.slug}) #namespace:url_name
+
+    def get_markdown(self):
+        content = self.content
+        return mark_safe(markdown(content))
+
+
 
 def create_slug(instance, new_slug=None):
     slug = slugify(instance.title)
@@ -51,5 +63,9 @@ def create_slug(instance, new_slug=None):
 def pre_save_post_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_slug(instance)
+
+    if instance.content:
+        html_string = instance.get_markdown()
+        instance.read_time = get_read_time(html_string)
 
 pre_save.connect(pre_save_post_receiver, sender=Post)

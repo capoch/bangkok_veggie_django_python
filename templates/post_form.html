@@ -1,5 +1,7 @@
 <!-- Doctype html-->
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
 
 {% block head_extra %}
 
@@ -9,11 +11,22 @@
 
 
   {% block content %}
-  <div class="col-sm-6 col-sm-offset-3">
+  <div class="col-sm-6">
+    <h3>Input</h3>
     <!-- enctype added for image/file -->
     <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" class="btn btn-primary" value="Post it!"/>
+      {{ form|crispy }}
+      <input type="submit" class="btn btn-primary" name="poster" value="Save Draft!"/>
     </form>
   </div>
+  <div class="col-sm-6">
+    <h3>Preview:</h3>
+    <div class="content-preview">
+      <h3 id="preview-title"></h3>
+      <p id="preview-content"></p>
+    </div>
+  </div>
+
+
+
   {% endblock %}

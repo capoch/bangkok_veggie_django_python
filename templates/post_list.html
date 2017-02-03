@@ -4,8 +4,12 @@
   <div class="col-sm-6 col-sm-offset-3">
     <h1>{{ title }}</h1>
     <form method='GET' action=".">
-      <input type="text" name="q" placeholder"Search posts" value="{{ request.GET.q }}"/>
-      <input type="submit" value="Search"/>
+      <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Search for..." value="{{ request.GET.q }}"/>
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit">Search <i class="fa fa-search"></i></button>
+        </span>
+      </div><!-- /input-group -->
     </form>
       {% for obj in object_list %}
       <div class="row">
@@ -14,7 +18,7 @@
             {% if obj.image  %}
             <img src="{{ obj.image.url }}" class="img-responsive">
             {% endif %}
-            <div class="caption">
+            <div class="caption post-detail-item">
               {% if obj.draft %}<h3>Draft</h3>{% endif %}
               {% if obj.publish > today %}<h3 style="color:red;">future</h3>{% endif %}
               <h3><a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a><small>{{ obj.publish | timesince }}</small></h3>
@@ -23,7 +27,7 @@
               {% else %}
               <p>Author: {{ obj.user }}</p>
               {% endif %}
-              <p class="content-markdown">{{ obj.content }}</p>
+              {{ obj.get_markdown|truncatechars_html:120 }}
               <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">View</a></p>
             </div>
           </div>

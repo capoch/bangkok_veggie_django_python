@@ -8,6 +8,8 @@
 
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     <style>{% block style %}{% endblock %}</style>
     {% block head_extra %}{% endblock %}
   </head>
@@ -38,16 +40,27 @@
 
     <script type="text/javascript">
     $(document).ready(function(){
-      $(".content-markdown").each(function(){
-        var content = $(this).text()
-        var markedContent = marked(content)
-        $(this).html(markedContent)
-      })
-      $(".content-markdown img").each(function(){
-        $(this).addClass("img-responsive")
-      })
-    })
+      $("#id_title").on('input change keyup paste', function() {
+        $("#preview-title").text($(this).val());
+        });
+      $(".wmd-input").on('input change keyup paste', function() {
+        var m = $(marked($(this).val()));
+        m.find("img").map(function () {
+          $(this).addClass('img-responsive');
+          });
+        $("#preview-content").html(m);
+      });
+    });
+    $(document).ready(function(){
+      $('#id_draft').click(function(){
+        if ( $(this).is(':checked')) {
+          $('input[name=poster]').attr("value","Save Draft!");
+        }
+        else {
+          $('input[name=poster]').attr("value","Post It!");
+        }
+      });
+    });
     </script>
-
   </body>
 </html>
