@@ -21,9 +21,22 @@
     <div class="col-sm-12 post-detail-item">{{ post.get_markdown }}</div>
     <hr />
     <br />
-    <div> {{ post.comment_set.all }}
+    <div>
+      <p class="lead">Comments</p>
+      {% for comment in comments %}
+      <div class=" ">
+        {{ comment.content}}
+        <br/>
+        <small>via {{ comment.user }} | {{ comment.timestamp|timesince }} ago</small>
+        <hr/>
+      </div>
+      {% endfor %}
+      <!-- Comments for non generic relations
+      {{ post.comment_set.all }} -->
 
-    <div class="fb-comments" data-href="{{ request.build_absolute_url }}" data-numposts="5"></div>
+    </div>
+<!-- Facebook comments deactivated for now:
+    <div class="fb-comments" data-href="{{ request.build_absolute_url }}" data-numposts="5"></div> -->
   <!-- <p>
     <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_url }}">Share on Facebook</a>
     <a href="https://twitter.com/home?status={{ post.content|truncatechars:140|urlify }}%20{{ request.build_absolute_url }}">Share on Twitter</a>

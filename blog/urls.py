@@ -24,5 +24,4 @@ urlpatterns = [
     url(r'^(?P<slug>[\w-]+)/edit/$', posts_edit, name="edit"),
     url(r'^(?P<slug>[\w-]+)/delete/$', posts_delete, name="delete"),
 
-
 ]

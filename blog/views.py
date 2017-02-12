@@ -1,6 +1,7 @@
 from urllib.parse import quote
 
 from django.contrib import messages
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
@@ -11,6 +12,7 @@ from django.utils import timezone
 from .forms import PostForm
 from .models import Post
 from .utils import count_words, get_read_time
+from comments.models import Comment
 # Create your views here.
 
 #CRUD for blogs
@@ -38,9 +40,13 @@ def posts_detail(request,slug):
         if not request.user.is_staff or not request.user.is_superuser:
             if not post.user == request.user:
                 raise PermissionDenied
-
+    content_type = ContentType.objects.get_for_model(Post)
+    obj_id = post.id
+    comments = Comment.objects.filter(content_type=content_type, object_id=obj_id)
     context = {
-        "post":post,
+        "title": post.title,
+        "post": post,
+        "comments": comments,
     }
     return render(request,'post_detail.html',context)
 
