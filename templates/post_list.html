@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
   {% block content %}
-  <div class="col-sm-6 col-sm-offset-3">
-    <h1>{{ title }}</h1>
+  <div class="col-sm-8 col-sm-offset-2 post-list">
+    {% if request.user.is_authenticated %}
     <form method='GET' action=".">
       <div class="input-group">
         <input type="text" name="q" class="form-control" placeholder="Search for..." value="{{ request.GET.q }}"/>
@@ -11,28 +11,35 @@
         </span>
       </div><!-- /input-group -->
     </form>
+    {% endif %}
       {% for obj in object_list %}
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="thumbnail">
-            {% if obj.image  %}
-            <img src="{{ obj.image.url }}" class="img-responsive">
-            {% endif %}
-            <div class="caption post-detail-item">
+      <article class="blog-post">
+        <div class="row">
+          <div class="col-sm-12">
+            <!-- <div class="caption post-detail-item">
               {% if obj.draft %}<h3>Draft</h3>{% endif %}
               {% if obj.publish > today %}<h3 style="color:red;">future</h3>{% endif %}
-              <h3><a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a><small>{{ obj.publish | timesince }}</small></h3>
-              {% if obj.user.get_full_name %}
-              <p>Author: {{ obj.user.get_full_name }}</p>
-              {% else %}
-              <p>Author: {{ obj.user }}</p>
+              <h3><a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a>
+                (<a href="{% url 'posts:detail_location' obj.location.slug %}" target="_blank">{{ obj.location }}</a>)<br />
+                  <small>{{ obj.publish }}</small></h3>
+            </div> -->
+            <div class="article">
+              {% if obj.image  %}
+              <a href ="{{ obj.get_absolute_url }}"><img src="{{ obj.image.url }}" class="img-responsive blog-title-image"></a>
               {% endif %}
-              {{ obj.get_markdown|truncatechars_html:120 }}
-              <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">View</a></p>
+              <div class="text post-detail-item">
+                {% if obj.user.get_full_name %}
+                <p>Author: {{ obj.user.get_full_name }}</p>
+                {% else %}
+                <p>Author: {{ obj.user }}</p>
+                {% endif %}
+                {{ obj.content|truncatechars_html:240 }}
+                <!-- <p><a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">View</a></p> -->
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </article>
       <!-- for better alignment, after every second loop (post) insert a full-width(col12) div and then reopen the row-div -->
       <!-- {% cycle '' '<div class="col-sm-12"><hr /></div></div><div class="row">' %} -->
       {% endfor %}

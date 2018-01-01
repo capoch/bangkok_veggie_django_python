@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+  {% block content %}
+  <div class="col-sm-8 col-sm-offset-2 post-list">
+    {% if request.user.is_authenticated %}
+    <form method='GET' action=".">
+      <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Search for..." value="{{ request.GET.q }}"/>
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="submit">Search <i class="fa fa-search"></i></button>
+        </span>
+      </div><!-- /input-group -->
+    </form>
+    {% endif %}
+    <table class="table">
+      <tr>
+        <th>Name</th>
+        <th>Suburb</th>
+        <th>Cuisine</th>
+        <th>Type</th>
+        <th>Rating</th>
+        {% if request.user.is_authenticated %}
+        <th></th>
+        {% endif %}
+      </tr>
+      {% for obj in object_list %}
+      <tr>
+        <td><a href="{{ obj.get_absolute_url }}">{{ obj.name }}</a></td>
+        <td>{{ obj.suburb }}</td>
+        <td>{{ obj.cuisine }}</td>
+        <td>{{ obj.loc_type }}</td>
+        <td>{{ obj.rating }}</td>
+        {% if request.user.is_authenticated %}
+        <td><a href="{% url 'posts:edit_location' obj.slug %}">edit</a></td>
+        {% endif %}
+      {% endfor %}
+    </table>
+      <div class="pagination">
+        <span class="step-links">
+            {% if object_list.has_previous %}
+                <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+            </span>
+
+            {% if object_list.has_next %}
+                <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
+            {% endif %}
+        </span>
+      </div>
+    </div>
+  {% endblock %}

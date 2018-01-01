@@ -11,6 +11,7 @@ class PostCreateUpdateSerializer(ModelSerializer):
             'title',
             'content',
             'publish',
+            'draft',
         ]
 
 class PostDetailSerializer(ModelSerializer):
@@ -18,10 +19,12 @@ class PostDetailSerializer(ModelSerializer):
         model = Post
         fields = [
             'id',
+            'user',
             'title',
             'slug',
             'content',
             'publish',
+            'draft',
         ]
 
 class PostListSerializer(ModelSerializer):
@@ -33,4 +36,5 @@ class PostListSerializer(ModelSerializer):
             'slug',
             'content',
             'publish',
+            'draft',
         ]

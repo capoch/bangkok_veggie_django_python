@@ -2,11 +2,16 @@
 {% load urlify %}
 {% block content %}
 
-  <div class="col-sm-6 col-sm-offset-3">
+  <div class="col-sm-8 col-sm-offset-2">
+    {% if user.is_authenticated %}
+    <p><a href="{% url 'posts:edit' post.slug %}" class="btn btn-primary" role="button">Edit</a></p>
+    {% endif %}
     {% if post.image %}
     <img src="{{ post.image.url }}" class="img-responsive" />
     {% endif %}
     <h1>{{ post.title }}<small>{% if post.draft %}<span style="color:red;">Draft</span>{% endif %}{{ post.publish }}</small></h1>
+    </ br>
+    <h3>{{ post.subtitle }}</h3>
     {% if post.user.get_full_name %}
     <p>Author: {{ post.user.get_full_name }}</p>
     {% else %}

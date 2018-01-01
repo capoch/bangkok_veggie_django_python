@@ -15,11 +15,19 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from .views import posts_list, posts_create, posts_detail, posts_edit, posts_delete
+from .views import location_list, location_create, location_detail, location_edit, posts_list, posts_create, posts_detail, posts_edit, posts_delete, about, vdict, thai_dishes, contact
 
 urlpatterns = [
     url(r'^$', posts_list, name="home"),
+    url(r'^location/$', location_list, name="locations"),
+    url(r'^location/create/$', location_create, name="create_location"),
+    url(r'^location/(?P<slug>[\w-]+)/$', location_detail, name="detail_location"),
+    url(r'^location/(?P<slug>[\w-]+)/edit/$', location_edit, name="edit_location"),
     url(r'^create/$', posts_create, name="create"),
+    url(r'^about/$', about, name="about"),
+    url(r'^dict/$', vdict, name="dict"),
+    url(r'^thai_dishes/$', thai_dishes, name="thai_dishes"),
+    url(r'^contact/$', contact, name="contact"),
     url(r'^(?P<slug>[\w-]+)/$', posts_detail, name="detail"),
     url(r'^(?P<slug>[\w-]+)/edit/$', posts_edit, name="edit"),
     url(r'^(?P<slug>[\w-]+)/delete/$', posts_delete, name="delete"),
